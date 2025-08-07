@@ -1,0 +1,180 @@
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AISystemsCard",
+  "type": "object",
+  "required": [
+    "introduction",
+    "legalInformation",
+    "disclaimer",
+    "license",
+    "purpose",
+    "technicalInformation",
+    "dataProvenanceAndPedigree",
+    "securityAndSafety",
+    "governance",
+    "references"
+  ],
+  "properties": {
+    "introduction": {
+      "type": "string",
+      "description": "Static introduction text included in all AI System Cards.",
+      "const": "This AI mode/system card is created in accordance with the research at: https://arxiv.org/pdf/2411.12275\n\nIt serves as an introduction to the AI model/system. Also as an extension it contains information about the intent, scope and training/fine-tuning data sources, evaluation methodology and governance details of the AI system"
+    },
+    "legalInformation": {
+      "type": "string",
+      "description": "Legal information and terms of usage."
+    },
+    "disclaimer": {
+      "type": "string",
+      "description": "General disclaimer text."
+    },
+    "license": {
+      "type": "string",
+      "description": "License under which this AI Systems Card is published."
+    },
+    "purpose": {
+      "type": "object",
+      "required": ["description"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "The intended purpose of the AI system."
+        }
+      }
+    },
+    "technicalInformation": {
+      "type": "object",
+      "required": [
+        "aiModel",
+        "hostingPlatform",
+        "developmentStack",
+        "inferenceMechanism",
+        "languages",
+        "guardrails"
+      ],
+      "properties": {
+        "aiModel": {
+          "type": "string",
+          "description": "The name/version of the AI model."
+        },
+        "hostingPlatform": {
+          "type": "string",
+          "description": "Platform used to host the model."
+        },
+        "developmentStack": {
+          "type": "string",
+          "description": "Core development technologies and frameworks."
+        },
+        "inferenceMechanism": {
+          "type": "string",
+          "description": "Inference server or engine used."
+        },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of supported human languages."
+        },
+        "guardrails": {
+          "type": "string",
+          "description": "Name/version of the safety or content guardrail model."
+        }
+      }
+    },
+    "dataProvenanceAndPedigree": {
+      "type": "object",
+      "required": ["baseModel", "guardrailsModel", "augmentationSources"],
+      "properties": {
+        "baseModel": {
+          "type": "object",
+          "required": ["name", "modelCardUrl"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the base AI model."
+            },
+            "modelCardUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to the base model's card."
+            }
+          }
+        },
+        "guardrailsModel": {
+          "type": "object",
+          "required": ["name", "modelCardUrl"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the guardrail model."
+            },
+            "modelCardUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to the guardrail model's card."
+            }
+          }
+        },
+        "augmentationSources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Data sources used to augment or fine‑tune the model."
+          }
+        }
+      }
+    },
+    "securityAndSafety": {
+      "type": "object",
+      "required": [
+        "intentAndUse",
+        "scope",
+        "securityConsiderations",
+        "securityFlaws",
+        "safetyHazards"
+      ],
+      "properties": {
+        "intentAndUse": {
+          "type": "string",
+          "description": "Description of the system's intended use and constraints."
+        },
+        "scope": {
+          "type": "string",
+          "description": "Explicit scope and exclusions of the AI system."
+        },
+        "securityConsiderations": {
+          "type": "string",
+          "description": "Measures and guardrails for security and abuse prevention."
+        },
+        "securityFlaws": {
+          "type": "string",
+          "description": "Known security flaws, if any."
+        },
+        "safetyHazards": {
+          "type": "string",
+          "description": "Known safety hazards, if any."
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["issueReportingContact"],
+      "properties": {
+        "issueReportingContact": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email for reporting security or safety issues."
+        }
+      }
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "description": "List of URLs or documents referenced in this card."
+    }
+  }
+}
+
