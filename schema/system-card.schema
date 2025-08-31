@@ -1,179 +1,225 @@
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "AISystemsCard",
+  "title": "AI System Card",
   "type": "object",
   "required": [
-    "introduction",
-    "legalInformation",
-    "disclaimer",
-    "license",
+    "metadata",
     "purpose",
-    "technicalInformation",
-    "dataProvenanceAndPedigree",
-    "securityAndSafety",
+    "technical_information",
+    "data_provenance_and_pedigree",
+    "security_and_safety",
     "governance",
     "references"
   ],
+  "additionalProperties": false,
+
   "properties": {
-    "introduction": {
-      "type": "string",
-      "description": "Static introduction text included in all AI System Cards.",
-      "const": "This AI mode/system card is created in accordance with the research at: https://arxiv.org/pdf/2411.12275\n\nIt serves as an introduction to the AI model/system. Also as an extension it contains information about the intent, scope and training/fine-tuning data sources, evaluation methodology and governance details of the AI system"
-    },
-    "legalInformation": {
-      "type": "string",
-      "description": "Legal information and terms of usage."
-    },
-    "disclaimer": {
-      "type": "string",
-      "description": "General disclaimer text."
-    },
-    "license": {
-      "type": "string",
-      "description": "License under which this AI Systems Card is published."
-    },
-    "purpose": {
+    "metadata": {
       "type": "object",
-      "required": ["description"],
+      "description": "Header fields at the top of the card.",
+      "required": [
+        "ai_system_name",
+        "version",
+        "developer",
+        "security_contact",
+        "card_created_date",
+        "publish_date",
+        "license"
+      ],
+      "additionalProperties": false,
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "The intended purpose of the AI system."
+        "ai_system_name": { "type": "string", "description": "e.g., \"Ask Red Hat AI Assistant\"" },
+        "version": { "type": "string", "description": "System card or system version (SemVer recommended)" },
+        "developer": { "type": "string", "description": "Organization responsible for the AI system" },
+        "security_contact": { "type": "string", "format": "idn-email", "description": "Contact for security concerns" },
+        "card_created_date": { "type": "string", "format": "date", "description": "Date of system card creation" },
+        "publish_date": { "type": "string", "format": "date" },
+        "license": {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string", "description": "e.g., Creative Commons Attribution 4.0 International (CC BY 4.0)" },
+            "url": { "type": "string", "format": "uri" },
+            "spdx_id": { "type": "string", "description": "Optional SPDX or short identifier, e.g., CC-BY-4.0" }
+          }
         }
       }
     },
-    "technicalInformation": {
+
+    "purpose": {
+      "type": "string",
+      "description": "Narrative purpose of the system as presented in the card."
+    },
+
+    "technical_information": {
       "type": "object",
-      "required": [
-        "aiModel",
-        "hostingPlatform",
-        "developmentStack",
-        "inferenceMechanism",
-        "languages",
-        "guardrails"
-      ],
+      "description": "Fields from the Technical Information section.",
+      "required": ["ai_model", "hosting_platform", "development_stack", "inference_mechanism", "languages", "guardrails"],
+      "additionalProperties": false,
       "properties": {
-        "aiModel": {
-          "type": "string",
-          "description": "The name/version of the AI model."
+        "ai_model": { "type": "string", "description": "Primary base model name" },
+        "hosting_platform": { "type": "string", "description": "e.g., Red Hat OpenShift Container Platform 4" },
+        "development_stack": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Technologies listed (e.g., Llama Stack, MongoDB, Python)"
         },
-        "hostingPlatform": {
-          "type": "string",
-          "description": "Platform used to host the model."
-        },
-        "developmentStack": {
-          "type": "string",
-          "description": "Core development technologies and frameworks."
-        },
-        "inferenceMechanism": {
-          "type": "string",
-          "description": "Inference server or engine used."
+        "inference_mechanism": {
+          "type": "object",
+          "required": ["name"],
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string", "description": "e.g., Red Hat Inference Server" },
+            "url": { "type": "string", "format": "uri" }
+          }
         },
         "languages": {
           "type": "array",
           "items": { "type": "string" },
-          "description": "List of supported human languages."
+          "minItems": 1,
+          "description": "Human languages supported"
         },
         "guardrails": {
-          "type": "string",
-          "description": "Name/version of the safety or content guardrail model."
+          "type": "object",
+          "required": ["model"],
+          "additionalProperties": false,
+          "properties": {
+            "model": { "type": "string", "description": "e.g., IBM granite-guardian-3.2-5b" },
+            "model_card_url": { "type": "string", "format": "uri" },
+            "notes": { "type": "string" }
+          }
         }
       }
     },
-    "dataProvenanceAndPedigree": {
+
+    "data_provenance_and_pedigree": {
       "type": "object",
-      "required": ["baseModel", "guardrailsModel", "augmentationSources"],
+      "description": "Content from Data Provenance and Pedigree.",
+      "required": ["base_model", "augmentation_sources"],
+      "additionalProperties": false,
       "properties": {
-        "baseModel": {
+        "base_model": {
           "type": "object",
-          "required": ["name", "modelCardUrl"],
+          "required": ["name"],
+          "additionalProperties": false,
           "properties": {
-            "name": {
-              "type": "string",
-              "description": "Name of the base AI model."
-            },
-            "modelCardUrl": {
-              "type": "string",
-              "format": "uri",
-              "description": "URL to the base model's card."
+            "name": { "type": "string", "description": "Base model used (e.g., IBM Granite-3.2-8B-Instruct)" },
+            "model_card_url": { "type": "string", "format": "uri" },
+            "data_provenance_references": {
+              "type": "array",
+              "items": { "type": "string", "format": "uri" },
+              "description": "Links discussing training data/provenance"
             }
           }
         },
-        "guardrailsModel": {
+        "guardrails_model": {
           "type": "object",
-          "required": ["name", "modelCardUrl"],
+          "required": ["name"],
+          "additionalProperties": false,
           "properties": {
-            "name": {
-              "type": "string",
-              "description": "Name of the guardrail model."
-            },
-            "modelCardUrl": {
-              "type": "string",
-              "format": "uri",
-              "description": "URL to the guardrail model's card."
+            "name": { "type": "string" },
+            "model_card_url": { "type": "string", "format": "uri" },
+            "data_provenance_references": {
+              "type": "array",
+              "items": { "type": "string", "format": "uri" }
             }
           }
         },
-        "augmentationSources": {
+        "augmentation_sources": {
           "type": "array",
+          "minItems": 1,
           "items": {
-            "type": "string",
-            "description": "Data sources used to augment or fine‑tune the model."
-          }
-        }
+            "type": "object",
+            "required": ["name_or_description"],
+            "additionalProperties": false,
+            "properties": {
+              "name_or_description": { "type": "string", "description": "e.g., Red Hat Knowledgebase, docs.redhat.com, console.redhat.com" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          },
+          "description": "Sources used for RAG/augmentation"
+        },
+        "notes": { "type": "string" }
       }
     },
-    "securityAndSafety": {
+
+    "security_and_safety": {
       "type": "object",
-      "required": [
-        "intentAndUse",
-        "scope",
-        "securityConsiderations",
-        "securityFlaws",
-        "safetyHazards"
-      ],
+      "description": "Section: Security and Safety of the AI System.",
+      "required": ["intent_and_use", "scope", "security_considerations", "security_flaws_and_safety_hazards"],
+      "additionalProperties": false,
       "properties": {
-        "intentAndUse": {
-          "type": "string",
-          "description": "Description of the system's intended use and constraints."
-        },
-        "scope": {
-          "type": "string",
-          "description": "Explicit scope and exclusions of the AI system."
-        },
-        "securityConsiderations": {
-          "type": "string",
-          "description": "Measures and guardrails for security and abuse prevention."
-        },
-        "securityFlaws": {
-          "type": "string",
-          "description": "Known security flaws, if any."
-        },
-        "safetyHazards": {
-          "type": "string",
-          "description": "Known safety hazards, if any."
+        "intent_and_use": { "type": "string" },
+        "scope": { "type": "string" },
+        "security_considerations": { "type": "string" },
+        "security_flaws_and_safety_hazards": {
+          "type": "array",
+          "description": "Items listed in the table of issues",
+          "items": { "$ref": "#/$defs/issue_item" }
         }
       }
     },
+
     "governance": {
       "type": "object",
-      "required": ["issueReportingContact"],
+      "required": ["reporting_instructions"],
+      "additionalProperties": false,
       "properties": {
-        "issueReportingContact": {
-          "type": "string",
-          "format": "email",
-          "description": "Contact email for reporting security or safety issues."
+        "reporting_instructions": { "type": "string", "description": "How to report security or safety issues" },
+        "contacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/contact" }
         }
       }
     },
+
     "references": {
       "type": "array",
-      "items": {
-        "type": "string",
-        "format": "uri"
-      },
-      "description": "List of URLs or documents referenced in this card."
+      "minItems": 1,
+      "description": "Links cited in the card",
+      "items": { "$ref": "#/$defs/link" }
+    }
+  },
+
+  "$defs": {
+    "contact": {
+      "type": "object",
+      "required": ["email"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "idn-email" },
+        "role": { "type": "string" }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["title", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "issue_item": {
+      "type": "object",
+      "required": ["issue_id", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "issue_id": { "type": "string", "description": "e.g., RHSECAI-2025-0001" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["open", "in-progress", "fixed", "mitigated", "wontfix"],
+          "description": "Use 'fixed' for entries that state 'fixed in <Month Year>'"
+        },
+        "status_date": { "type": "string", "format": "date", "description": "e.g., 2025-04-01 for 'fixed in April 2025' (approximate to first of month if needed)" },
+        "notes": { "type": "string" }
+      }
     }
   }
 }
