@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AI System Card - {{ metadata.ai_system_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>AI System Card - "{{ metadata.ai_system_name }}"</h1>
+
+    <section id="metadata">
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>AI System Name</strong></td>
+            <td>{{ metadata.ai_system_name }}</td>
+          </tr>
+          <tr>
+            <td><strong>Version</strong></td>
+            <td>{{ metadata.version }}</td>
+          </tr>
+          <tr>
+            <td><strong>AI system developed by</strong></td>
+            <td>{{ metadata.developer }}</td>
+          </tr>
+          <tr>
+            <td><strong>Contact for security concerns</strong></td>
+            <td><a href="mailto:{{ metadata.security_contact }}">{{ metadata.security_contact }}</a></td>
+          </tr>
+          <tr>
+            <td><strong>Date of system card creation</strong></td>
+            <td>{{ metadata.card_created_date }}</td>
+          </tr>
+          <tr>
+            <td><strong>Publish date</strong></td>
+            <td>{{ metadata.publish_date }}</td>
+          </tr>
+          <tr>
+            <td><strong>License</strong></td>
+            <td>
+              {{ metadata.license.name }}{% if metadata.license.url %}
+                — <a href="{{ metadata.license.url }}" target="_blank" rel="noopener">{{ metadata.license.url }}</a>
+              {% endif %}
+              {% if metadata.license.spdx_id %} ({{ metadata.license.spdx_id }}){% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="purpose">
+      <h2>Purpose</h2>
+      <p>{{ purpose }}</p>
+    </section>
+
+    <section id="technical_information">
+      <h2>Technical Information</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>AI model</strong></td>
+            <td>{{ technical_information.ai_model }}</td>
+          </tr>
+          <tr>
+            <td><strong>Hosting platform</strong></td>
+            <td>{{ technical_information.hosting_platform }}</td>
+          </tr>
+          <tr>
+            <td><strong>Development stack</strong></td>
+            <td>
+              <ul>
+                {% for tech in technical_information.development_stack %}
+                <li>{{ tech }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Inference mechanism</strong></td>
+            <td>
+              {% if technical_information.inference_mechanism.url %}
+                <a href="{{ technical_information.inference_mechanism.url }}" target="_blank" rel="noopener">{{ technical_information.inference_mechanism.name }}</a>
+              {% else %}
+                {{ technical_information.inference_mechanism.name }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Languages</strong></td>
+            <td>
+              <ul>
+                {% for lang in technical_information.languages %}
+                <li>{{ lang }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Guardrails</strong></td>
+            <td>
+              {% if technical_information.guardrails.model_card_url %}
+                <a href="{{ technical_information.guardrails.model_card_url }}" target="_blank" rel="noopener">{{ technical_information.guardrails.model }}</a>
+              {% else %}
+                {{ technical_information.guardrails.model }}
+              {% endif %}
+              {% if technical_information.guardrails.notes %}
+                <div>{{ technical_information.guardrails.notes }}</div>
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="data_provenance_and_pedigree">
+      <h2>Data Provenance and Pedigree</h2>
+      <h3>Base model</h3>
+      <p>
+        {% if data_provenance_and_pedigree.base_model.model_card_url %}
+          <a href="{{ data_provenance_and_pedigree.base_model.model_card_url }}" target="_blank" rel="noopener">{{ data_provenance_and_pedigree.base_model.name }}</a>
+        {% else %}
+          {{ data_provenance_and_pedigree.base_model.name }}
+        {% endif %}
+      </p>
+      {% if data_provenance_and_pedigree.base_model.data_provenance_references %}
+      <ul>
+        {% for ref in data_provenance_and_pedigree.base_model.data_provenance_references %}
+        <li><a href="{{ ref }}" target="_blank" rel="noopener">{{ ref }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if data_provenance_and_pedigree.guardrails_model %}
+      <h3>Guardrails model</h3>
+      <p>
+        {% if data_provenance_and_pedigree.guardrails_model.model_card_url %}
+          <a href="{{ data_provenance_and_pedigree.guardrails_model.model_card_url }}" target="_blank" rel="noopener">{{ data_provenance_and_pedigree.guardrails_model.name }}</a>
+        {% else %}
+          {{ data_provenance_and_pedigree.guardrails_model.name }}
+        {% endif %}
+      </p>
+      {% if data_provenance_and_pedigree.guardrails_model.data_provenance_references %}
+      <ul>
+        {% for ref in data_provenance_and_pedigree.guardrails_model.data_provenance_references %}
+        <li><a href="{{ ref }}" target="_blank" rel="noopener">{{ ref }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endif %}
+
+      <h3>Augmentation sources</h3>
+      <ul>
+        {% for src in data_provenance_and_pedigree.augmentation_sources %}
+        <li>
+          {% if src.url %}
+            <a href="{{ src.url }}" target="_blank" rel="noopener">{{ src.name_or_description }}</a>
+          {% else %}
+            {{ src.name_or_description }}
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
+      {% if data_provenance_and_pedigree.notes %}
+      <p>{{ data_provenance_and_pedigree.notes }}</p>
+      {% endif %}
+    </section>
+
+    <section id="security_and_safety">
+      <h2>Security and Safety of the AI System</h2>
+      <h3>Intent and use</h3>
+      <p>{{ security_and_safety.intent_and_use }}</p>
+      <h3>Scope</h3>
+      <p>{{ security_and_safety.scope }}</p>
+      <h3>Security considerations</h3>
+      <p>{{ security_and_safety.security_considerations }}</p>
+      <h3>Security flaws and Safety hazards</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Issue ID</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Status date</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in security_and_safety.security_flaws_and_safety_hazards %}
+          <tr>
+            <td>{{ item.issue_id }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.status_date or '' }}</td>
+            <td>{{ item.notes or '' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section id="governance">
+      <h2>Governance</h2>
+      <p>{{ governance.reporting_instructions }}</p>
+      {% if governance.contacts %}
+      <ul>
+        {% for c in governance.contacts %}
+        <li>
+          {% if c.name %}{{ c.name }} — {% endif %}
+          <a href="mailto:{{ c.email }}">{{ c.email }}</a>
+          {% if c.role %} ({{ c.role }}){% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+
+    <section id="references">
+      <h2>References</h2>
+      <ul>
+        {% for link in references %}
+        <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+  </body>
+  </html>
+

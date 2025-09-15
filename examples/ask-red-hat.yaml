@@ -1,0 +1,136 @@
+metadata:
+  ai_system_name: Ask Red Hat AI Assistant
+  version: "1.0.0"
+  developer: Red Hat, Inc.
+  security_contact: security@redhat.com
+  card_created_date: "2025-07-15"
+  publish_date: "2025-08-29"
+  license:
+    name: Creative Commons Attribution 4.0 International (CC BY 4.0)
+    url: https://creativecommons.org/licenses/by/4.0/
+    spdx_id: CC-BY-4.0
+
+purpose: >-
+  The "Ask Red Hat" AI Assistant is an AI-powered assistant integrated into the
+  Red Hat Customer Portal. Its purpose is to help customers quickly find
+  relevant Red Hat knowledge, product documentation, and support resources
+  through natural language queries. It streamlines problem-solving, improves
+  self-service, and enhances the overall support experience for Red Hat users.
+
+technical_information:
+  ai_model: IBM Granite-3.2-8B-Instruct
+  hosting_platform: Red Hat OpenShift Container Platform 4
+  development_stack:
+    - Llama Stack
+    - MongoDB
+    - Python
+  inference_mechanism:
+    name: Red Hat Inference Server
+    url: https://www.redhat.com/en/products/ai/inference-server
+  languages:
+    - Arabic
+    - Chinese
+    - Czech
+    - Dutch
+    - English
+    - French
+    - German
+    - Italian
+    - Japanese
+    - Korean
+    - Portuguese
+    - Spanish
+  guardrails:
+    model: IBM granite-guardian-3.2-5b
+    model_card_url: https://huggingface.co/ibm-granite/granite-guardian-3.2-5b
+    notes: Granite Guardian 3.2 model used for guardrails.
+
+data_provenance_and_pedigree:
+  base_model:
+    name: IBM Granite-3.2-8B-Instruct
+    model_card_url: https://huggingface.co/ibm-granite/granite-3.2-8b-instruct
+    data_provenance_references:
+      - https://arxiv.org/pdf/2405.04324
+  guardrails_model:
+    name: IBM granite-guardian-3.2-5b
+    model_card_url: https://huggingface.co/ibm-granite/granite-guardian-3.2-5b
+    data_provenance_references:
+      - https://arxiv.org/pdf/2412.07724
+  augmentation_sources:
+    - name_or_description: Red Hat Customer Portal
+      url: https://access.redhat.com/
+    - name_or_description: Red Hat Documentation
+      url: https://docs.redhat.com/
+    - name_or_description: Red Hat Console
+      url: https://console.redhat.com/
+  notes: >-
+    Red Hat content from knowledgebase articles, documentation, and content
+    from access.redhat.com, docs.redhat.com, and console.redhat.com is used for
+    augmentation.
+
+security_and_safety:
+  intent_and_use: >-
+    Ask Red Hat is designed for users of Red Hat’s products to search and
+    retrieve publicly available Red Hat knowledge, product documentation,
+    security data, support content, and other helpful information using natural
+    language queries. It answers with information that is already public and
+    customer-facing and is intended to support safe, professional use.
+  scope: >-
+    The system excludes responses that require disclosure of internal-only or
+    confidential information. It does not support modification of system-level
+    instructions through prompt injection and will reject or neutralize such
+    attempts. While it can discuss security topics (e.g., XSS) at a general and
+    educational level, it does not provide step-by-step exploit instructions.
+  security_considerations: >-
+    Safeguards such as Granite Guardian, rate limiting, and input sanitation are
+    in place to reduce abuse. As with similar systems, inherent risks remain,
+    and the system is designed to answer security-related questions in a safe
+    and preventative manner.
+  security_flaws_and_safety_hazards:
+    - issue_id: RHSECAI-2025-0001
+      description: Implement Harmful or Malicious Query Detection and Refusal Mechanism.
+      status: fixed
+      status_date: "2025-04-01"
+      notes: fixed in April 2025
+    - issue_id: RHCVEFIX-2025-05
+      description: >-
+        Update Llama Stack and other components to mitigate publicly disclosed
+        CVEs. Implement logic for an "UnsupportedInputDetector".
+      status: fixed
+      status_date: "2025-05-01"
+      notes: fixed in May 2025
+    - issue_id: RHSECAI-2025-0002
+      description: Ensure inputs are sanitized at all points in the pipeline and increase depth of safety-related integration tests.
+      status: fixed
+      status_date: "2025-07-01"
+      notes: fixed in July 2025
+    - issue_id: RHSECAI-2025-0003
+      description: >-
+        Implement increased guardrail security with custom risk definitions;
+        upgrade Granite Guardian to 3.2 model; enhance user input logging
+        sanitization to improve security.
+      status: fixed
+      status_date: "2025-08-01"
+      notes: fixed in August 2025
+
+governance:
+  reporting_instructions: Any security or safety issues related to the AI system should be reported to security@redhat.com.
+  contacts:
+    - name: Red Hat Product Security
+      email: security@redhat.com
+      role: Security contact
+
+references:
+  - title: Ask Red Hat AI System Card
+    url: https://access.redhat.com/ai/system-card/ask-red-hat
+  - title: Ask Red Hat announcement and details
+    url: https://access.redhat.com/articles/ask-red-hat
+  - title: IBM Granite-3.2-8B-Instruct (Hugging Face)
+    url: https://huggingface.co/ibm-granite/granite-3.2-8b-instruct
+  - title: IBM Granite Guardian 3.2-5b (Hugging Face)
+    url: https://huggingface.co/ibm-granite/granite-guardian-3.2-5b
+  - title: Data provenance for Granite models (arXiv 2405.04324)
+    url: https://arxiv.org/pdf/2405.04324
+  - title: Data provenance for Granite Guardian (arXiv 2412.07724)
+    url: https://arxiv.org/pdf/2412.07724
+
