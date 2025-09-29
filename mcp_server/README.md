@@ -25,18 +25,9 @@ This directory contains the Model Context Protocol (MCP) HTTP server implementat
    ```bash
    curl -X POST http://127.0.0.1:8000/mcp \
      -H "Content-Type: application/json" \
-     -H "Authorization: Bearer default-secure-token" \
      -H "MCP-Protocol-Version: 2024-11-05" \
-     -H "Origin: http://localhost:3000" \
      -d '{"jsonrpc": "2.0", "id": "1", "method": "resources/list"}'
    ```
-
-## Security
-
-- **Authentication**: Bearer token required (set via `MCP_SERVER_TOKEN` env var)
-- **Origin Validation**: Prevents DNS rebinding attacks
-- **Protocol Compliance**: Enforces MCP protocol version headers
-- **Localhost Binding**: Defaults to 127.0.0.1 for security
 
 ## Resources Exposed
 
