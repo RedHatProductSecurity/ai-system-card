@@ -66,6 +66,17 @@ python system_card_generator.py \
 
 If validation succeeds, the rendered HTML will be written to `build/ask-red-hat.html`.
 
+### MCP HTTP Server
+
+This repository also includes a Model Context Protocol (MCP) HTTP server that exposes system card sections as read-only resources. See the [`mcp_server/`](mcp_server/) directory for details.
+
+**Quick start:**
+```bash
+cd mcp_server
+pip install -r requirements.txt
+python mcp_server.py ../examples/ask-red-hat.yaml ../schema/system-card.schema
+```
+
 ### Notes
 
 - The HTML template (`templates/system_card.html.j2`) intentionally contains no CSS so it can be copied into other portals that apply their own styling.
